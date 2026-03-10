@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Maxwell Sikorski</title>
+    <meta name="description" content="AI Researcher & Engineer — On-device vision-language AI for real-time industrial inspection.">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" id="favicon-dark" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>M</text></svg>" media="(prefers-color-scheme: dark)">
+    <link rel="icon" id="favicon-light" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='black'>M</text></svg>" media="(prefers-color-scheme: light)">
+    <!-- Fonts (same as Eden site) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ── Custom Properties / Tokens (matching Eden) ── */
+        :root {
+            --theme-black: #000000;
+            --theme-dark-gray: #1c1c1e;
+            --theme-light-gray: #f5f5f7;
+            --theme-white: #ffffff;
+
+            --bg-color: var(--theme-black);
+            --text-color: var(--theme-white);
+            --card-bg: rgba(28, 28, 30, 0.7);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --card-hover: rgba(44, 44, 46, 0.8);
+            --btn-bg: var(--theme-white);
+            --btn-text: var(--theme-black);
+            --btn-hover: #e0e0e0;
+            --btn-sec-bg: transparent;
+            --btn-sec-border: var(--theme-white);
+            --btn-sec-text: var(--theme-white);
+            --btn-sec-hover: rgba(255, 255, 255, 0.1);
+            --divider: rgba(255, 255, 255, 0.08);
+            --text-muted: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Light Mode Overrides */
+        [data-theme="light"] {
+            --bg-color: var(--theme-light-gray);
+            --text-color: var(--theme-black);
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --card-border: rgba(0, 0, 0, 0.1);
+            --card-hover: rgba(255, 255, 255, 0.9);
+            --btn-bg: var(--theme-black);
+            --btn-text: var(--theme-white);
+            --btn-hover: #333333;
+            --btn-sec-bg: transparent;
+            --btn-sec-border: var(--theme-black);
+            --btn-sec-text: var(--theme-black);
+            --btn-sec-hover: rgba(0, 0, 0, 0.05);
+            --divider: rgba(0, 0, 0, 0.08);
+            --text-muted: rgba(0, 0, 0, 0.5);
+        }
+
+        /* ── Base Styles ── */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
+            min-height: 100vh;
+            min-height: 100dvh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ── Typography (matching Eden) ── */
+        h1, h2, h3 {
+            letter-spacing: -0.04em;
+            font-weight: 700;
+        }
+
+        p {
+            line-height: 1.6;
+            color: inherit;
+            opacity: 0.85;
+        }
+
+        /* ── Navigation ── */
+        .header-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .logo {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            transition: color 0.5s ease;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.5s ease;
+        }
+
+        /* ── Hero Section (matching Eden full-viewport centered layout) ── */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.1;
+            margin-bottom: 16px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            max-width: 480px;
+            margin: 0 auto 40px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* ── Buttons (matching Eden pill style) ── */
+        .btn {
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .primary-btn {
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            border: none;
+        }
+
+        .primary-btn:hover {
+            background-color: var(--btn-hover);
+        }
+
+        .primary-btn:active {
+            transform: scale(0.97);
+        }
+
+        .secondary-btn {
+            background-color: var(--btn-sec-bg);
+            color: var(--btn-sec-text);
+            border: 1px solid var(--btn-sec-border);
+        }
+
+        .secondary-btn:hover {
+            background-color: var(--btn-sec-hover);
+        }
+
+        .secondary-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* ── Content Section (below hero) ── */
+        .content-section {
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 28px 80px;
+        }
+
+        /* ── Section Labels ── */
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 20px;
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: var(--divider);
+            margin: 48px 0 32px;
+        }
+
+        /* ── Project Cards (glassmorphism like Eden modals) ── */
+        .projects {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px;
+            background: var(--card-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .card:hover {
+            background: var(--card-hover);
+            transform: translateY(-2px);
+        }
+
+        .card:active {
+            transform: translateY(0);
+        }
+
+        .card-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            font-weight: 400;
+            opacity: 0.6;
+            line-height: 1.5;
+        }
+
+        .card-arrow {
+            flex-shrink: 0;
+            margin-left: 16px;
+            opacity: 0.3;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .card:hover .card-arrow {
+            opacity: 0.7;
+            transform: translateX(3px);
+        }
+
+        /* ── Link Rows ── */
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .link-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 0;
+            border-bottom: 1px solid var(--divider);
+            text-decoration: none;
+            color: inherit;
+            transition: opacity 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .link-row:first-child {
+            border-top: 1px solid var(--divider);
+        }
+
+        .link-row:hover {
+            opacity: 0.6;
+        }
+
+        .link-label {
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .link-arrow {
+            opacity: 0.3;
+            flex-shrink: 0;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 500;
+            opacity: 0.3;
+            padding: 60px 0 40px;
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 768px) {
+            .header-nav {
+                padding: 20px;
+            }
+
+            .content-section {
+                padding: 0 20px 60px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <!-- Navigation (matching Eden) -->
+    <nav class="header-nav">
+        <a href="#" class="logo" id="logo-refresh">Maxwell Sikorski</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
+            <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path class="sun-path" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+        </button>
+    </nav>
+
+    <!-- Hero Section (matching Eden full-viewport layout) -->
+    <main class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Research by Maxwell.</h1>
+            <p class="hero-subtitle">AI researcher and engineer building on-device vision-language systems for industrial inspection and robotics.</p>
+            <div class="hero-cta">
+                <button class="btn primary-btn" id="saveContact">Save My Contact</button>
+                <a href="mailto:maxwell.sikorski@gmail.com" class="btn secondary-btn">Get in Touch</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Content Below Fold -->
+    <div class="content-section">
+
+        <!-- Projects -->
+        <div class="section-label">Projects</div>
+        <div class="projects">
+            <a href="https://salt-inspect.com" target="_blank" rel="noopener" class="card">
+                <div class="card-content">
+                    <div class="card-title">SALT Inspector</div>
+                    <div class="card-desc">Live AI anomaly detection in your browser. No cloud, no data uploaded.</div>
+                </div>
+                <svg class="card-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </a>
+
+            <a href="https://github.com/MaxSikorski/edge-vljepa" target="_blank" rel="noopener" class="card">
+                <div class="card-content">
+                    <div class="card-title">Edge VL-JEPA</div>
+                    <div class="card-desc">On-device vision-language AI for real-time industrial inspection. Live video, spoken feedback, AR overlays.</div>
+                </div>
+                <svg class="card-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </a>
+
+            <a href="https://maxsikorski.github.io/Eden-3D-Manufacturing-Robotics/" target="_blank" rel="noopener" class="card">
+                <div class="card-content">
+                    <div class="card-title">Eden Manufacturing & Robotics</div>
+                    <div class="card-desc">Precision additive manufacturing and AI-powered robotics. Toledo, Ohio.</div>
+                </div>
+                <svg class="card-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Connect -->
+        <div class="section-label">Connect</div>
+        <div class="links">
+            <a href="mailto:maxwell.sikorski@gmail.com" class="link-row">
+                <span class="link-label">Email</span>
+                <svg class="link-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                </svg>
+            </a>
+
+            <a href="REPLACE_WITH_LINKEDIN_URL" target="_blank" rel="noopener" class="link-row">
+                <span class="link-label">LinkedIn</span>
+                <svg class="link-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                </svg>
+            </a>
+
+            <a href="https://github.com/MaxSikorski" target="_blank" rel="noopener" class="link-row">
+                <span class="link-label">GitHub</span>
+                <svg class="link-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">Sikorski AI Research Lab</div>
+
+    </div>
+
+    <!-- GSAP (same version as Eden site) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        // ── Hero Animations (matching Eden's exact pattern) ──
+        const tl = gsap.timeline({ defaults: { ease: "power4.out", duration: 1.2 } });
+
+        gsap.set(".hero-title, .hero-subtitle, .hero-cta", { opacity: 0, y: 30 });
+
+        tl.to(".hero-title", { opacity: 1, y: 0, delay: 0.2 })
+          .to(".hero-subtitle", { opacity: 1, y: 0 }, "-=0.9")
+          .to(".hero-cta", { opacity: 1, y: 0 }, "-=0.9");
+
+        // Logo click replays animation (same as Eden)
+        document.getElementById("logo-refresh").addEventListener("click", (e) => {
+            e.preventDefault();
+            gsap.set(".hero-title, .hero-subtitle, .hero-cta", { opacity: 0, y: 30 });
+            tl.restart();
+        });
+
+        // ── Staggered card animations on scroll ──
+        const cards = document.querySelectorAll(".card");
+        const linkRows = document.querySelectorAll(".link-row");
+
+        gsap.set(cards, { opacity: 0, y: 20 });
+        gsap.set(linkRows, { opacity: 0, y: 10 });
+        gsap.set(".section-label", { opacity: 0 });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+
+                    if (el.classList.contains("section-label")) {
+                        gsap.to(el, { opacity: 1, duration: 0.6, ease: "power4.out" });
+                    } else if (el.classList.contains("card")) {
+                        gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: "power4.out", delay: el.dataset.delay || 0 });
+                    } else if (el.classList.contains("link-row")) {
+                        gsap.to(el, { opacity: 1, y: 0, duration: 0.6, ease: "power4.out", delay: el.dataset.delay || 0 });
+                    }
+                    observer.unobserve(el);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Assign stagger delays
+        cards.forEach((card, i) => { card.dataset.delay = i * 0.1; observer.observe(card); });
+        linkRows.forEach((row, i) => { row.dataset.delay = i * 0.08; observer.observe(row); });
+        document.querySelectorAll(".section-label").forEach(el => observer.observe(el));
+
+        // ── Theme Toggle (matching Eden exactly) ──
+        const themeBtn = document.getElementById("theme-toggle");
+        const themeIcon = document.getElementById("theme-icon");
+
+        const sunPath = "M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z";
+        const moonPath = "M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z";
+
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+        let isDark = prefersDark.matches;
+
+        const applyTheme = (dark, animate = true) => {
+            document.body.setAttribute("data-theme", dark ? "dark" : "light");
+            document.querySelector('meta[name="theme-color"]').content = dark ? "#000000" : "#f5f5f7";
+            const pathNode = themeIcon.querySelector("path");
+            pathNode.setAttribute("d", dark ? sunPath : moonPath);
+
+            // Update favicon to match theme
+            const faviconDark = document.getElementById("favicon-dark");
+            const faviconLight = document.getElementById("favicon-light");
+            if (dark) {
+                faviconDark.setAttribute("href", "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>M</text></svg>");
+                faviconDark.removeAttribute("media");
+                faviconLight.setAttribute("media", "not all");
+            } else {
+                faviconLight.setAttribute("href", "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='black'>M</text></svg>");
+                faviconLight.removeAttribute("media");
+                faviconDark.setAttribute("media", "not all");
+            }
+
+            if (animate) {
+                gsap.fromTo(themeIcon,
+                    { rotation: 0, scale: 0.8 },
+                    { rotation: 360, scale: 1, duration: 0.6, ease: "power2.out" }
+                );
+            }
+        };
+
+        applyTheme(isDark, false);
+
+        themeBtn.addEventListener("click", () => {
+            isDark = !isDark;
+            applyTheme(isDark);
+        });
+
+        prefersDark.addEventListener("change", (e) => {
+            isDark = e.matches;
+            applyTheme(isDark, true);
+        });
+
+        // ── Save Contact (vCard download) ──
+        document.getElementById("saveContact").addEventListener("click", () => {
+            const link = document.createElement("a");
+            link.href = "maxwell.vcf";
+            link.download = "Maxwell Sikorski.vcf";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    });
+    </script>
+</body>
+</html>
