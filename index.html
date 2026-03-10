@@ -8,8 +8,7 @@
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" id="favicon-dark" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>M</text></svg>" media="(prefers-color-scheme: dark)">
-    <link rel="icon" id="favicon-light" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='black'>M</text></svg>" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>M</text></svg>">
     <!-- Fonts (same as Eden site) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -387,7 +386,7 @@
         <!-- Projects -->
         <div class="section-label">Projects</div>
         <div class="projects">
-            <a href="https://maxsikorski.github.io/salt-inspect/" target="_blank" rel="noopener" class="card">
+            <a href="https://salt-inspect.com" target="_blank" rel="noopener" class="card">
                 <div class="card-content">
                     <div class="card-title">SALT Inspector</div>
                     <div class="card-desc">Live AI anomaly detection in your browser. No cloud, no data uploaded.</div>
@@ -518,19 +517,6 @@
             const pathNode = themeIcon.querySelector("path");
             pathNode.setAttribute("d", dark ? sunPath : moonPath);
 
-            // Update favicon to match theme
-            const faviconDark = document.getElementById("favicon-dark");
-            const faviconLight = document.getElementById("favicon-light");
-            if (dark) {
-                faviconDark.setAttribute("href", "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>M</text></svg>");
-                faviconDark.removeAttribute("media");
-                faviconLight.setAttribute("media", "not all");
-            } else {
-                faviconLight.setAttribute("href", "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='black'>M</text></svg>");
-                faviconLight.removeAttribute("media");
-                faviconDark.setAttribute("media", "not all");
-            }
-
             if (animate) {
                 gsap.fromTo(themeIcon,
                     { rotation: 0, scale: 0.8 },
@@ -554,7 +540,7 @@
         // ── Save Contact (vCard download) ──
         document.getElementById("saveContact").addEventListener("click", () => {
             const link = document.createElement("a");
-            link.href = "maxwell.vcf";
+            link.href = "Maxwell.Sikorski.vcf";
             link.download = "Maxwell Sikorski.vcf";
             document.body.appendChild(link);
             link.click();
