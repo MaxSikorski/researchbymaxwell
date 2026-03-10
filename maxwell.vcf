@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Sikorski;Maxwell;;;
+FN:Maxwell Sikorski
+ORG:Sikorski AI Research Lab
+TITLE:AI Researcher & Engineer
+EMAIL:maxwell.sikorski@gmail.com
+TEL;TYPE=4192968426
+URL:https://maxsikorski.github.io/researchbymaxwell/
+URL:https://maxsikorski.github.io/salt-inspect/
+URL:https://maxsikorski.github.io/Eden-3D-Manufacturing-Robotics/
+NOTE:Edge VL-JEPA - On-device vision-language AI for real-time industrial inspection. Eden Manufacturing - Precision additive manufacturing and robotics.
+END:VCARD
